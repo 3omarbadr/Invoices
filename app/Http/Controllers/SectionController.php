@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
+use App\Http\Requests\SectionRequest;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class InvoiceController extends Controller
+class SectionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return view('invoices.index');
+        $sections = Section::all(); 
+        return view('sections.index', compact('sections'));
     }
 
     /**
@@ -33,18 +36,24 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SectionRequest $request)
     {
-        //
+        Section::create([
+            'section_name' => $request->section_name,
+            'description' => $request->description,
+            'created_by' => Auth::user()->name
+        ]);
+
+        return redirect()->route('sections.index')->with('add','تم اضافة القسم بنجاح');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show(Section $section)
     {
         //
     }
@@ -52,10 +61,10 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function edit(Invoice $invoice)
+    public function edit(Section $section)
     {
         //
     }
@@ -64,10 +73,10 @@ class InvoiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invoice  $invoice
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, Section $section)
     {
         //
     }
@@ -75,10 +84,10 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Section $section)
     {
         //
     }
